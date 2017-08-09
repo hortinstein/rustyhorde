@@ -30,20 +30,21 @@ fn main() {
 
     let mut core = Core::new().unwrap();
     let client = Client::new(&core.handle());
-    let url : Uri = "https://api.coinmarketcap.com/v1/ticker/".parse().unwrap();
+    let url : Uri = "https://api.coinmarketcap.com/v1/ticker/?limit=10".parse().unwrap();
 
     let request = client.get(url).and_then(|res| {
-        println!("Response: {}",res.status());
-        res.body().concat2().and_then( move |body| {
-            let v: Value = serde_json::from_slice(&body).map_err(|e| {
-                io::Error::new(
-                    io::ErrorKind::Other,
-                    e
-                )  
-            }).unwrap();
-            println!("current Bitcoin price is {:?}", v);
-            Ok(())
-        })
+        println!("Response: {} {:?}",res.status(), res.body());
+        // res.body().concat2().and_then( move |body| {
+        //     let v: Value = serde_json::from_slice(&body).map_err(|e| {
+        //         io::Error::new(
+        //             io::ErrorKind::Other,
+        //             e
+        //         )  
+        //     })?;
+        //     println!("current Bitcoin price is {:?}", v);
+        //     Ok(())
+        // })
+        Ok(())
     });
 
     // request is a Future, futures are lazy, so must explicitly run
