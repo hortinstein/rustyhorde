@@ -43,12 +43,28 @@ fn main() {
         })
     });
     // request is a Future, futures are lazy, so must explicitly run
-    core.run(work).unwrap();
+    let res = core.run(work).unwrap();
     
+
+    let data = r#"{
+                    "name": "John Doe",
+                    "age": 43,
+                    "phones": [
+                      "+44 1234567",
+                      "+44 2345678"
+                    ]
+                  }"#;
+
+    // Parse the string of data into serde_json::Value.
+    let v: Value = serde_json::from_str(data).unwrap();
+
+
+
     println!("Hello, world!");
     println!("{} or {} or {}",
         Red.paint("Red"),
         Bold.paint("Bold"),
         Red.bold().paint("Both!")
     );
+    println!("{:?}",res);
 }
