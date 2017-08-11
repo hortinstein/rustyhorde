@@ -1,7 +1,12 @@
 extern crate term_painter;
 extern crate reqwest;
 
-mod coinparse;
+
+extern crate serde_json;
+// JSON Parsing and Construction
+// https://github.com/serde-rs/json
+use serde_json::{Value, Error};
+
 mod getcointicker;
 
 use std::io;
@@ -11,13 +16,16 @@ use term_painter::ToStyle;
 use term_painter::Color::*;
 use term_painter::Attr::*;
 use getcointicker::coinprices;
-fn main() {
 
-    println!("Hello, world!");
-    println!("{} or {} or {}",
-        Red.paint("Red"),
-        Bold.paint("Bold"),
-        Red.bold().paint("Both!")
+fn main() {
+    println!("rusty{}, ",
+        Yellow.paint("Horde"),
     );
-    println!("{}",coinprices(4));
+    let cp = match coinprices(4) {
+        Result::Ok(val) => {val},
+        Result::Err(err) => {format!("OH NO")}
+    };
+    println!("{}",cp);  
+//     let v: Value = serde_json::from_str(&cp);
+//     println!("{}",v[0]["market_cap_usd"]);  
 }
