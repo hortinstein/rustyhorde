@@ -26,6 +26,6 @@ fn main() {
         Result::Err(err) => {format!("OH NO")}
     };
     println!("{}",cp);  
-//     let v: Value = serde_json::from_str(&cp);
-//     println!("{}",v[0]["market_cap_usd"]);  
+    let v: Value = serde_json::from_str(&cp).unwrap();
+    println!("{}",v[0]["market_cap_usd"]);  
 }

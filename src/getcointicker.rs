@@ -5,8 +5,10 @@ use std::io::Read;
 ///
 ///
 pub fn coinprices(limit: i32) ->  Result<String, reqwest::Error> {
-    let uri = "https://api.coinmarketcap.com/v1/ticker/?limit=10";
-
+    
+    let mut uri: String = "https://api.coinmarketcap.com/v1/ticker/?limit=".to_owned();
+    uri.push_str(&(limit.to_string()));
+    println!("{}",uri);
     let mut resp = reqwest::get(uri)?;
     assert!(resp.status().is_success());
 
