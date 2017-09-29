@@ -26,6 +26,9 @@ fn main() {
         Result::Err(err) => {format!("OH NO")}
     };
     println!("{}",cp);  
-    let v: Value = serde_json::from_str(&cp).unwrap();
+    let v: Value = match serde_json::from_str(&cp){
+        Result::Ok(val) => {val},
+        Result::Err(err) => {panic!("Unable to get item")}
+    };
     println!("{}",v[0]["market_cap_usd"]);  
 }

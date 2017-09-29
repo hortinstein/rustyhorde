@@ -7,3 +7,7 @@ authors = ["Alex Hortin <hortinstein@gmail.com>"]
 term-painter = "0.2.3"
 reqwest = "0.7.2"
 serde_json = "1.0.2"
+
+[lib]
+name = "getcointicker"
+path = "src/getcointicker.rs"
