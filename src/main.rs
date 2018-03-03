@@ -7,7 +7,7 @@ extern crate serde_json;
 // https://github.com/serde-rs/json
 use serde_json::{Value};
 
-mod getcointicker;
+extern crate getcointicker;
 
 //use std::io;
 
@@ -21,18 +21,18 @@ fn main() {
     println!("rusty{}, ",
         Yellow.paint("Horde"),
     );
-    let cp = match coinprices(4) {
+    let cp: String = match coinprices(25) {
         Result::Ok(val) => {val},
         Result::Err(err) => {format!("Unable to get coin prices: {}",err)}
     };
-    println!("{}",cp);  
-    let v: Value = match serde_json::from_str(&cp){
+
+    let v: Vec<Value> = match serde_json::from_str(&cp){
         Result::Ok(val) => {val},
         Result::Err(err) => {panic!("Unable to parse json: {}",err)}
     };
-    
-    for coin in v.as_array() {
-        println!("{}",coin[0]);
+
+    for item in &v {
+        println!("{:?}\n", item);
     }
         
     println!("{}",v[0]["market_cap_usd"]);  

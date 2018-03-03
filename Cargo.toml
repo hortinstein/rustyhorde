@@ -10,7 +10,7 @@ serde_json = "1.0.2"
 
 [lib]
 name = "getcointicker"
-path = "src/getcointicker.rs"
+path = "src/getcointicker/getcointicker.rs"
 
 [profile.release]
 opt-level = 3
