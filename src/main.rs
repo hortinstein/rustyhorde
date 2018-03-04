@@ -19,7 +19,7 @@ use std::io;
 use term_painter::ToStyle;
 use term_painter::Color::*;
 //use term_painter::Attr::*;
-use getcointicker::coinprices;
+use getcointicker::{coinprice_id,coinprices};
 
 #[macro_use]
 extern crate serde_derive;
@@ -37,6 +37,8 @@ struct Coin {
     percent_change_7d: String
 }
 
+
+
 fn split_args(in_string: &str) -> (&str, f32) {
     let mut splitter = in_string.splitn(2, ':');
     let first = splitter.next().unwrap();
@@ -45,19 +47,9 @@ fn split_args(in_string: &str) -> (&str, f32) {
     (first, ret_second)
 }
 
-fn main() {
-
-
-    //collects the arguments 
-    let args: Vec<String> = std::env::args().collect();
-    for arg in &args[1..]{
-        println!("{:?}",split_args(&arg));
-    }
-
-    println!("rusty{}, ", Yellow.paint("Horde"),);
-    
+fn top_50_log() {
     //retrieve the prices for each coin
-    let cp: String = match coinprices(25) {
+    let cp: String = match coinprices(50) {
         Result::Ok(val) => val,
         Result::Err(err) => format!("Unable to get coin prices: {}", err),
     };
@@ -70,5 +62,28 @@ fn main() {
     for item in &v {
         println!("{:?}",item.id);
     }
+}
 
+fn main() {
+
+    //collects the arguments 
+    let args: Vec<String> = std::env::args().collect();
+    for arg in &args[1..]{
+        let coin = split_args(&arg);
+
+        let cp = match coinprice_id(String::from(coin.0)) {
+            Result::Ok(val) => val,
+            Result::Err(err) => format!("coinprice_id failed: {}", err),
+        };
+        let v: Vec<Coin> = match serde_json::from_str(&cp) {
+            Result::Ok(val) => val,
+            Result::Err(err) => panic!("Unable to parse json: {}", err),
+        };
+        println!("{:?}",v );
+    }
+
+    println!("rusty{}, ", Yellow.paint("Horde"),);
+    
+    
+    top_50_log();
 }
